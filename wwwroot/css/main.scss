@@ -1,0 +1,25 @@
+
+.gameboard
+{
+	border: 1px solid #333;
+
+	tr { 
+		height: 5px; 
+	
+		td {
+			width: 5px;
+
+			&.alive {
+				background-color: #00FF00;
+			}
+		}	
+	}
+
+    .alive {
+        fill: #2d578b;
+    }
+
+    .dead {
+        fill: white;
+    }
+}
