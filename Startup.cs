@@ -27,11 +27,6 @@ namespace conways_game_of_life
 
             app.UseDefaultFiles();  
             app.UseStaticFiles();
-            
-            // app.Run(async (context) =>
-            // {
-            //     await context.Response.WriteAsync("Hello World!");
-            // });
         }
     }
 }
