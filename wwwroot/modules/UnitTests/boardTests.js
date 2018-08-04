@@ -7,8 +7,7 @@
 define(function (require) {
     'use strict';
 
-    var $ = require('jquery'),
-        _ = require('underscore'),
+    var _ = require('underscore'),
         Board = require('board');
 
     require('jasmine');
@@ -31,57 +30,62 @@ define(function (require) {
             var board = null;
 
             beforeEach(function () {
-                board = new Board();
+                
+            });
+            afterEach(function () {
+                board.destroy();
             });
 
             describe('ctor', function () {
                 it('sets current generation to 0', function () {
-                    expect(board.generation).toBe(0);
+                    board = new Board({preventRendering: true});
+                    expect(board.generation()).toBe(0);
                 });
                 
                 it('sets default board size of 100x100', function () {
+                    board = new Board({preventRendering: true});
                     expect(board.width).toBe(100);
                     expect(board.height).toBe(100);
                 });
 
                 it('accepts a custom height', function () {
-                    board = new Board({ height: 500 });
+                    board = new Board({ height: 500, preventRendering: true });
                     expect(board.height).toBe(500);
                 });
 
                 it('accepts a custom width', function () {
-                    board = new Board({ width: 1000 });
+                    board = new Board({ width: 1000, preventRendering: true });
                     expect(board.width).toBe(1000);
                 });
 
                 it('accepts custom height and width', function () {
-                    board = new Board({ height: 500, width: 1000 });
+                    board = new Board({ height: 500, width: 1000, preventRendering: true });
                     expect(board.height).toBe(500);
                     expect(board.width).toBe(1000);
                 });
 
                 it('sets height to 10 if passed in value is less than 10', function () {
-                    board = new Board({ height: 5 });
+                    board = new Board({ height: 5, preventRendering: true });
                     expect(board.height).toBe(10);
                 });
 
                 it('sets width to 10 if passed in value is less than 10', function () {
-                    board = new Board({ width: 5 });
+                    board = new Board({ width: 5, preventRendering: true });
                     expect(board.width).toBe(10);
                 });
 
                 it('sets height to 768 if passed in value is greater than 768', function () {
-                    board = new Board({ height: 10000 });
+                    board = new Board({ height: 10000, preventRendering: true });
                     expect(board.height).toBe(768);
                 });
 
                 it('sets width to 1024 if passed in value is greater than 1024', function () {
-                    board = new Board({ width: 10000 });
+                    board = new Board({ width: 10000, preventRendering: true });
                     expect(board.width).toBe(1024);
                 });
 
                 it('creates a grid with the default dimensions', function () {
-                    board = new Board();
+                    board = new Board({preventRendering: true});
                     expect(board.grid.length).toBe(100);
                     expect(board.grid[0].length).toBe(100);
                     expect(board.grid[50].length).toBe(100);
@@ -89,7 +93,7 @@ define(function (require) {
                 });
 
                 it('creates a grid with custom (200 x 300) dimensions', function () {
-                    board = new Board({ height: 200, width: 300 });
+                    board = new Board({ height: 200, width: 300, preventRendering: true });
                     expect(board.grid.length).toBe(200);
                     expect(board.grid[0].length).toBe(300);
                     expect(board.grid[50].length).toBe(300);
@@ -99,7 +103,7 @@ define(function (require) {
                 });
 
                 it('creates a grid with custom (300 x 200) dimensions', function () {
-                    board = new Board({ height: 300, width: 200 });
+                    board = new Board({ height: 300, width: 200, preventRendering: true });
                     expect(board.grid.length).toBe(300);
                     expect(board.grid[0].length).toBe(200);
                     expect(board.grid[50].length).toBe(200);
@@ -112,6 +116,7 @@ define(function (require) {
 
                 it('accepts an initial state of cells', function () {
                     board = new Board({
+                        preventRendering: true,
                         cells: cells
                         //cells: [
                         //    '..........',
@@ -131,13 +136,13 @@ define(function (require) {
                 });
 
                 it('creates a grid with the default dimensions when an empty cell array is passed in', function () {
-                    board = new Board({ cells: [] });
+                    board = new Board({ cells: [], preventRendering: true });
                     expect(board.width).toBe(100);
                     expect(board.height).toBe(100);
                 });
 
                 it('create living cells according to the 1s in the passed in grid', function () {
-                    board = new Board({ cells: cells });
+                    board = new Board({ cells: cells, preventRendering: true });
                     expect(board.grid[3][4]).toBe(1);
                     expect(board.grid[8][2]).toBe(1);
                     expect(board.grid[5][5]).toBe(1);
@@ -145,7 +150,7 @@ define(function (require) {
                 });
 
                 it('create dead cells according to the 0s in the passed in grid', function () {
-                    board = new Board({ cells: cells });
+                    board = new Board({ cells: cells, preventRendering: true });
                     expect(board.grid[1][4]).toBe(0);
                     expect(board.grid[2][8]).toBe(0);
                     expect(board.grid[5][6]).toBe(0);
@@ -153,7 +158,7 @@ define(function (require) {
                 });
 
                 it('create all dead cells when passing in height and width', function () {
-                    board = new Board({ height: 10, width: 10 });
+                    board = new Board({ height: 10, width: 10, preventRendering: true });
                     expect(board.grid[1][4]).toBe(0);
                     expect(board.grid[2][8]).toBe(0);
                     expect(board.grid[5][6]).toBe(0);
@@ -166,7 +171,7 @@ define(function (require) {
                         gridWidth = 10,
                         sum = 0;
 
-                    board = new Board({ height: gridHeight, width: gridWidth, ratio: ratio });
+                    board = new Board({ height: gridHeight, width: gridWidth, ratio: ratio, preventRendering: true });
 
                     sum = _(board.grid)
                         .flatten()
@@ -182,7 +187,7 @@ define(function (require) {
                         gridHeight = 10,
                         gridWidth = 10;
 
-                    board = new Board({ height: gridHeight, width: gridWidth, ratio: ratio });
+                    board = new Board({ height: gridHeight, width: gridWidth, ratio: ratio, preventRendering: true });
                     var board2 = new Board({ height: gridHeight, width: gridWidth, ratio: ratio });
 
                     expect(_.isEqual(board.grid, board2.grid)).toBe(false);
@@ -194,7 +199,7 @@ define(function (require) {
                         gridWidth = 10,
                         sum = 0;
 
-                    board = new Board({ height: gridHeight, width: gridWidth });
+                    board = new Board({ height: gridHeight, width: gridWidth, preventRendering: true });
 
                     sum = _(board.grid)
                         .flatten()
@@ -211,7 +216,7 @@ define(function (require) {
                         gridWidth = 10,
                         sum = 0;
 
-                    board = new Board({ height: gridHeight, width: gridWidth, ratio: ratio });
+                    board = new Board({ height: gridHeight, width: gridWidth, ratio: ratio, preventRendering: true });
 
                     sum = _(board.grid)
                         .flatten()
@@ -227,7 +232,7 @@ define(function (require) {
                         gridWidth = 10,
                         sum = 0;
 
-                    board = new Board({ height: gridHeight, width: gridWidth, ratio: ratio });
+                    board = new Board({ height: gridHeight, width: gridWidth, ratio: ratio, preventRendering: true });
 
                     sum = _(board.grid)
                         .flatten()
@@ -241,11 +246,12 @@ define(function (require) {
 
             describe('Tick', function () {
                 it('increments current generation', function () {
+                    board = new Board({preventRendering: true});
                     board.tick();
-                    expect(board.generation).toBe(1);
+                    expect(board.generation()).toBe(1);
 
                     board.tick();
-                    expect(board.generation).toBe(2);
+                    expect(board.generation()).toBe(2);
                 });
 
                 describe('Any live cell with fewer than two live neighbours dies, as if caused by under-population.', function () {
@@ -262,7 +268,7 @@ define(function (require) {
                                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                     
                         board.tick();
                         var sum = board.count();
@@ -282,7 +288,7 @@ define(function (require) {
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
                         var sum = board.count();
                         expect(sum).toBe(0);
@@ -301,7 +307,7 @@ define(function (require) {
                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                        ];
-                       board = new Board({ cells: cells });
+                       board = new Board({ cells: cells, preventRendering: true });
                        board.tick();
                        var sum = board.count();
                        expect(sum).toBe(0);
@@ -320,7 +326,7 @@ define(function (require) {
                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                        ];
-                       board = new Board({ cells: cells });
+                       board = new Board({ cells: cells, preventRendering: true });
                        board.tick();
                        var sum = board.count();
                        expect(sum).toBe(0);
@@ -339,7 +345,7 @@ define(function (require) {
                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                              [1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
                        ];
-                       board = new Board({ cells: cells });
+                       board = new Board({ cells: cells, preventRendering: true });
                        board.tick();
                        var sum = board.count();
                        expect(sum).toBe(0);
@@ -358,7 +364,7 @@ define(function (require) {
                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
                        ];
-                       board = new Board({ cells: cells });
+                       board = new Board({ cells: cells, preventRendering: true });
                        board.tick();
                        var sum = board.count();
                        expect(sum).toBe(0);
@@ -381,7 +387,7 @@ define(function (require) {
                                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
 
                         board.tick();
                         
@@ -401,7 +407,7 @@ define(function (require) {
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
                         
                         expect(board.grid[3][4]).toBe(1);
@@ -420,7 +426,7 @@ define(function (require) {
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
                         
                         expect(board.grid[0][0]).toBe(1);
@@ -439,7 +445,7 @@ define(function (require) {
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
                         
                         expect(board.grid[0][9]).toBe(1);
@@ -458,7 +464,7 @@ define(function (require) {
                               [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
                               [1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
 
                         expect(board.grid[9][0]).toBe(1);
@@ -477,7 +483,7 @@ define(function (require) {
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                               [0, 0, 0, 0, 0, 0, 0, 0, 1, 1]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
                         
                         expect(board.grid[9][9]).toBe(1);
@@ -500,7 +506,7 @@ define(function (require) {
                                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
 
                         board.tick();
                         var sum = board.count();
@@ -521,7 +527,7 @@ define(function (require) {
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
                         
                         expect(board.grid[0][1]).toBe(0);
@@ -540,7 +546,7 @@ define(function (require) {
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
                         var sum = board.count();
                         expect(sum).toBe(3);
@@ -559,7 +565,7 @@ define(function (require) {
                               [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
                               [1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
                         var sum = board.count();
                         expect(sum).toBe(3);
@@ -578,7 +584,7 @@ define(function (require) {
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                               [0, 0, 0, 0, 0, 0, 0, 0, 1, 1]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
                         var sum = board.count();
                         expect(sum).toBe(3);
@@ -601,7 +607,7 @@ define(function (require) {
                                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
 
                         board.tick();
                         var sum = board.count();
@@ -609,7 +615,7 @@ define(function (require) {
                         expect(board.grid[4][4]).toBe(1);
                     });
 
-                    xit('keeps live cell with three live neighbour', function () {
+                    it('keeps live cell with three live neighbour', function () {
                         var cells = [
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -622,13 +628,12 @@ define(function (require) {
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
-                        var sum = board.count();
-                        expect(sum).toBe(3);
+                        expect(board.grid[3][4]).toBe(1);
                     });
 
-                    xit('keeps left top live corner cell with two live neighbour', function () {
+                    it('keeps left top live corner cell with two live neighbour', function () {
                         var cells = [
                               [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -641,13 +646,15 @@ define(function (require) {
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
-                        var sum = board.count();
-                        expect(sum).toBe(3);
+                        expect(board.grid[0][0]).toBe(1);
+                        expect(board.grid[0][1]).toBe(1);
+                        expect(board.grid[1][0]).toBe(1);
+                        expect(board.grid[1][1]).toBe(1);
                     });
 
-                    xit('keeps right top live corner cell with two live neighbour', function () {
+                    it('keeps right top live corner cell with two live neighbour', function () {
                         var cells = [
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                               [0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
@@ -660,13 +667,15 @@ define(function (require) {
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
-                        var sum = board.count();
-                        expect(sum).toBe(3);
+                        expect(board.grid[0][9]).toBe(1);
+                        expect(board.grid[1][9]).toBe(1);
+                        expect(board.grid[0][8]).toBe(1);
+                        expect(board.grid[1][8]).toBe(1);
                     });
 
-                    xit('keeps left bottom live corner cell with two live neighbour', function () {
+                    it('keeps left bottom live corner cell with two live neighbour', function () {
                         var cells = [
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -679,13 +688,15 @@ define(function (require) {
                               [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
                               [1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
-                        var sum = board.count();
-                        expect(sum).toBe(3);
+                        expect(board.grid[9][0]).toBe(1);
+                        expect(board.grid[8][0]).toBe(1);
+                        expect(board.grid[9][1]).toBe(1);
+                        expect(board.grid[8][1]).toBe(1);
                     });
 
-                    xit('keeps right bottom live corner cell with two live neighbour', function () {
+                    it('keeps right bottom live corner cell with two live neighbour', function () {
                         var cells = [
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -698,16 +709,19 @@ define(function (require) {
                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
                               [0, 0, 0, 0, 0, 0, 0, 0, 1, 1]
                         ];
-                        board = new Board({ cells: cells });
+                        board = new Board({ cells: cells, preventRendering: true });
                         board.tick();
-                        var sum = board.count();
-                        expect(sum).toBe(3);
+                        expect(board.grid[9][9]).toBe(1);
+                        expect(board.grid[9][8]).toBe(1);
+                        expect(board.grid[8][8]).toBe(1);
+                        expect(board.grid[8][9]).toBe(1);
                     });
 
 
                 });               
             });
 
+            // This test breaks the suite for some reason. Haven't looked into it yet.
             // describe('Step Generation', function () {
             //     it('runs specified number of generations', function () {
             //         runs(function () {

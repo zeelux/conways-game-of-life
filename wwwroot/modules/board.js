@@ -11,7 +11,6 @@ define(function (require) {
     var $ = require('jquery'),
         _ = require('underscore'),
         ko = require('knockout'),
-        //d3 = require('d3');
         Kinetic = require('kinetic');
 
     function Board(options) {
@@ -37,8 +36,17 @@ define(function (require) {
             this.grid = createGrid(this.height, this.width, this.options.ratio || 0);
         }
 
-        this.initKinetic();
-        this.updateKinetic();
+        if (!this.options.preventRendering) {
+            this.initKinetic();
+            this.updateKinetic();
+        }
+    };
+
+    Board.prototype.destroy = function () {
+        if (!this.options.preventRendering) {
+            this.cellLayer.destroy();
+            this.stage.destroy();
+        }
     };
 
     function createGrid(height, width, ratio) {
@@ -100,7 +108,9 @@ define(function (require) {
 
         self.generation(self.generation() + 1);
 
-        this.updateKinetic();
+        if (!self.options.preventRendering) {
+            this.updateKinetic();
+        }
     };
 
     function delayedTick(self, count, executions) {
@@ -141,6 +151,7 @@ define(function (require) {
             cellSize = 5,
             cellPadding = 2;
 
+        if (self.options.preventRendering) { return; }
         //$('div.gameboard').empty();
 
         if (!self.stage) {
@@ -182,6 +193,8 @@ define(function (require) {
         var self = this,
             row, col, cell, newVisibility;
 
+        if (self.options.preventRendering) { return; }
+        
         for (row = 0; row < self.height; row++) {
             for (col = 0; col < self.width; col++) {
                 cell = self.cells[row][col];
