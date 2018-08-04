@@ -42,7 +42,7 @@ define(function (require) {
     $(function () {
         console.log('Initializing');
         if (!done) {
-            var gameBoard = new Board({ height: 100, width: 100, ratio: 0.3 });
+            var gameBoard = new Board({ height: 75, width: 75, ratio: 0.3 });
             ko.applyBindings(gameBoard);
             done = true;
         }
