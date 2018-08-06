@@ -510,7 +510,7 @@ define(function (require) {
 
                         board.tick();
                         var sum = board.count();
-                        
+                        expect(sum).toBe(8);
                         expect(board.grid[4][4]).toBe(0);
                     });
 
@@ -532,65 +532,6 @@ define(function (require) {
                         
                         expect(board.grid[0][1]).toBe(0);
                     });
-
-                    xit('keeps right top live corner cell with two live neighbour', function () {
-                        var cells = [
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-                        ];
-                        board = new Board({ cells: cells, preventRendering: true });
-                        board.tick();
-                        var sum = board.count();
-                        expect(sum).toBe(3);
-                    });
-
-                    xit('keeps left bottom live corner cell with two live neighbour', function () {
-                        var cells = [
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-                        ];
-                        board = new Board({ cells: cells, preventRendering: true });
-                        board.tick();
-                        var sum = board.count();
-                        expect(sum).toBe(3);
-                    });
-
-                    xit('keeps right bottom live corner cell with two live neighbour', function () {
-                        var cells = [
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-                              [0, 0, 0, 0, 0, 0, 0, 0, 1, 1]
-                        ];
-                        board = new Board({ cells: cells, preventRendering: true });
-                        board.tick();
-                        var sum = board.count();
-                        expect(sum).toBe(3);
-                    });
-
-
                 });
 
                 describe('Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.', function () {
