@@ -4,7 +4,6 @@
 /// <reference path="../Scripts/underscore.js" />
 
 /*global define: true */
-
 define(function (require) {
     'use strict';
 
@@ -19,8 +18,6 @@ define(function (require) {
 
         this.options = options || {};
         this.init();
-
-        //ko.track(this, ['generation']);
     }
 
     Board.prototype.init = function () {
@@ -194,7 +191,7 @@ define(function (require) {
             row, col, cell, newVisibility;
 
         if (self.options.preventRendering) { return; }
-        
+
         for (row = 0; row < self.height; row++) {
             for (col = 0; col < self.width; col++) {
                 cell = self.cells[row][col];
